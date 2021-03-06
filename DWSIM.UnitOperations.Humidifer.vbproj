@@ -44,13 +44,78 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CapeOpen">
+      <HintPath>..\..\..\..\AppData\Local\DWSIM6\CapeOpen.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.Drawing.SkiaSharp">
+      <HintPath>..\..\..\..\AppData\Local\DWSIM6\DWSIM.Drawing.SkiaSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.DrawingTools.Point">
+      <HintPath>..\..\..\..\AppData\Local\DWSIM6\DWSIM.DrawingTools.Point.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.ExtensionMethods">
+      <HintPath>..\..\..\..\AppData\Local\DWSIM6\DWSIM.ExtensionMethods.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.GlobalSettings">
+      <HintPath>..\..\..\..\AppData\Local\DWSIM6\DWSIM.GlobalSettings.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.Interfaces">
+      <HintPath>..\..\..\..\AppData\Local\DWSIM6\DWSIM.Interfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.SharedClasses">
+      <HintPath>..\..\..\..\AppData\Local\DWSIM6\DWSIM.SharedClasses.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.Thermodynamics">
+      <HintPath>..\..\..\..\AppData\Local\DWSIM6\DWSIM.Thermodynamics.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.UnitOperations">
+      <HintPath>..\..\..\..\AppData\Local\DWSIM6\DWSIM.UnitOperations.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.XMLSerializer">
+      <HintPath>..\..\..\..\AppData\Local\DWSIM6\DWSIM.XMLSerializer.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\..\AppData\Local\DWSIM6\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SkiaSharp">
+      <HintPath>..\..\..\..\AppData\Local\DWSIM6\SkiaSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SkiaSharp.Extended">
+      <HintPath>..\..\..\..\AppData\Local\DWSIM6\SkiaSharp.Extended.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SkiaSharp.Views.Desktop.Common">
+      <HintPath>..\..\..\..\AppData\Local\DWSIM6\SkiaSharp.Views.Desktop.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SkiaSharp.Views.WindowsForms">
+      <HintPath>..\..\..\..\AppData\Local\DWSIM6\SkiaSharp.Views.WindowsForms.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking">
+      <HintPath>..\..\..\..\AppData\Local\DWSIM6\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
@@ -64,7 +129,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.vb" />
+    <Compile Include="Humidifier.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -99,6 +164,12 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\humidifier_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\humidifier_512.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
