@@ -2,7 +2,7 @@
 
     Inherits WeifenLuo.WinFormsUI.Docking.DockContent
 
-    Public Property HObject As Humidifer.ExternalUnitOperations.Humidifier
+    Public Property HObject As Humidifier
 
     Private Sub Editor_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
