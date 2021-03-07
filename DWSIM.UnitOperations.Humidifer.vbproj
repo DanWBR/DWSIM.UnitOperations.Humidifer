@@ -96,6 +96,10 @@
       <HintPath>..\..\..\..\AppData\Local\DWSIM6\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="RichTextBoxExtended">
+      <HintPath>..\..\..\..\AppData\Local\DWSIM6\RichTextBoxExtended.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="SkiaSharp">
       <HintPath>..\..\..\..\AppData\Local\DWSIM6\SkiaSharp.dll</HintPath>
       <Private>False</Private>
@@ -144,6 +148,7 @@
     <Compile Include="Editor.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Extender.vb" />
     <Compile Include="Humidifier.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

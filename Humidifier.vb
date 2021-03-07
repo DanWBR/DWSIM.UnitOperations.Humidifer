@@ -154,8 +154,10 @@ Imports DWSIM.UI.Shared
     'this function draws the object on the flowsheet
     Public Sub Draw(g As Object) Implements Interfaces.IExternalUnitOperation.Draw
 
+        'get the canvas object
         Dim canvas = DirectCast(g, SkiaSharp.SKCanvas)
 
+        'load the icon image on memory
         If Image Is Nothing Then
 
             Using bitmap = My.Resources.humidifier_512.ToSKBitmap()
@@ -169,6 +171,7 @@ Imports DWSIM.UI.Shared
         Dim w = Me.GraphicObject.Width
         Dim h = Me.GraphicObject.Height
 
+        'draw the image into the flowsheet inside the object's reserved rectangle area
         Using p As New SkiaSharp.SKPaint With {.FilterQuality = SkiaSharp.SKFilterQuality.High}
             canvas.DrawImage(Image, New SkiaSharp.SKRect(GraphicObject.X, GraphicObject.Y, GraphicObject.X + GraphicObject.Width, GraphicObject.Y + GraphicObject.Height), p)
         End Using
@@ -237,7 +240,7 @@ Imports DWSIM.UI.Shared
 
     End Sub
 
-    'this function display the properties on the croos-platfom user interface
+    'this function display the properties on the croos-platform user interface
     Public Sub PopulateEditorPanel(container As Object) Implements Interfaces.IExternalUnitOperation.PopulateEditorPanel
 
         'using extension methods from DWSIM.ExtensionMethods.Eto (DWISM.UI.Shared namespace)
@@ -262,24 +265,20 @@ Imports DWSIM.UI.Shared
 
     Public Overrides Sub Calculate(Optional args As Object = Nothing)
 
-        If Not GraphicObject.InputConnectors(0).IsAttached Then
+        If GetInletMaterialStream(0) Is Nothing Then
             Throw New Exception("No stream connected to inlet gas port")
         End If
 
-        If Not GraphicObject.InputConnectors(1).IsAttached Then
+        If GetInletMaterialStream(1) Is Nothing Then
             Throw New Exception("No stream connected to inlet water port")
         End If
 
-        If Not GraphicObject.OutputConnectors(0).IsAttached Then
+        If GetOutletMaterialStream(0) Is Nothing Then
             Throw New Exception("No stream connected to outlet gas port")
         End If
 
-        Dim i1 = GraphicObject.InputConnectors(0).AttachedConnector.AttachedFrom.Name
-        Dim i2 = GraphicObject.InputConnectors(1).AttachedConnector.AttachedFrom.Name
-        Dim o1 = GraphicObject.OutputConnectors(0).AttachedConnector.AttachedTo.Name
-
-        Dim gas_stream As DWSIM.Thermodynamics.Streams.MaterialStream = FlowSheet.SimulationObjects(i1)
-        Dim water_stream As DWSIM.Thermodynamics.Streams.MaterialStream = FlowSheet.SimulationObjects(i2)
+        Dim gas_stream As DWSIM.Thermodynamics.Streams.MaterialStream = GetInletMaterialStream(0)
+        Dim water_stream As DWSIM.Thermodynamics.Streams.MaterialStream = GetInletMaterialStream(1)
 
         'check if water stream is really made of liquid water only.
 
@@ -304,6 +303,8 @@ Imports DWSIM.UI.Shared
         Dim Pgas = gas_stream.GetPressure() 'Pa
         Dim Pwater = water_stream.GetPressure() 'Pa
 
+        'set outlet stream pressure as (Pg + Pw)/2
+
         mixedstream.SetPressure((Pgas + Pwater) / 2)
 
         Dim Hg = gas_stream.GetMassEnthalpy() 'kJ/kg
@@ -314,18 +315,20 @@ Imports DWSIM.UI.Shared
 
         If IsAdiabatic Then
 
+            'outlet stream enthalpy
+
             Dim Ho = (Wg * Hg + Ww * Hw) / (Wg + Ww) 'kJ/kg
+
+            'the stream will be calculated by the flowsheet solver, we just need to set its properties.
 
             mixedstream.SetMassEnthalpy(Ho)
             mixedstream.SetFlashSpec("PH") 'Pressure/Enthalpy
 
             'if the energy stream is connected, set its value to zero (adiabatic)
 
-            If GraphicObject.OutputConnectors(1).IsAttached Then
+            If GetOutletEnergyStream(1) IsNot Nothing Then
 
-                Dim o2 = GraphicObject.OutputConnectors(1).AttachedConnector.AttachedTo.Name
-
-                Dim energystream As DWSIM.UnitOperations.Streams.EnergyStream = FlowSheet.SimulationObjects(o2)
+                Dim energystream As DWSIM.UnitOperations.Streams.EnergyStream = GetOutletEnergyStream(1)
 
                 energystream.EnergyFlow = 0.0 'kW
 
@@ -333,7 +336,7 @@ Imports DWSIM.UI.Shared
 
         Else
 
-            If Not GraphicObject.OutputConnectors(1).IsAttached Then
+            If GetOutletEnergyStream(1) Is Nothing Then
                 Throw New Exception("No stream connected to outlet energy port")
             End If
 
@@ -344,6 +347,8 @@ Imports DWSIM.UI.Shared
             mixedstream.SetTemperature(Tg)
             mixedstream.SetFlashSpec("PT") 'Pressure/Temperature
 
+            'calculate the stream to get its enthalpy and close the energy balance.
+
             Me.PropertyPackage.CurrentMaterialStream = mixedstream
             mixedstream.Calculate()
 
@@ -352,15 +357,17 @@ Imports DWSIM.UI.Shared
 
             Dim Eb = (Wg * Hg + Ww * Hw) - Wo * Ho 'kJ/s = KW
 
-            Dim o2 = GraphicObject.OutputConnectors(1).AttachedConnector.AttachedTo.Name
-
-            Dim energystream As DWSIM.UnitOperations.Streams.EnergyStream = FlowSheet.SimulationObjects(o2)
+            Dim energystream As DWSIM.UnitOperations.Streams.EnergyStream = GetOutletEnergyStream(1)
 
             energystream.EnergyFlow = Eb 'kW
 
         End If
 
-        Dim outletstream = FlowSheet.SimulationObjects(o1)
+        'get a reference to the outlet stream
+
+        Dim outletstream = GetOutletMaterialStream(0)
+
+        'copy the properties from mixedstream
 
         outletstream.Assign(mixedstream)
 

@@ -8,11 +8,11 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("DWSIM.UnitOperations.Humidifer")>
-<Assembly: AssemblyDescription("")>
+<Assembly: AssemblyTitle("Humidifer Unit Operation")>
+<Assembly: AssemblyDescription("Humidifer Unit Operation for DWSIM")>
 <Assembly: AssemblyCompany("")>
 <Assembly: AssemblyProduct("DWSIM.UnitOperations.Humidifer")>
-<Assembly: AssemblyCopyright("Copyright ©  2021")>
+<Assembly: AssemblyCopyright("Copyright © 2021 Daniel Medeiros")>
 <Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
